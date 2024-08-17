@@ -1,0 +1,3 @@
+deltabot-cli
+requests
+beautifulsoup4
