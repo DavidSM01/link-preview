@@ -3,10 +3,10 @@ import requests
 
 
 def findURL(text: str) -> str | None:
-    regex = "((http|https)://)[-a-zA-Z0-9@:%._\\+~#?&//=]{2,256}\\.[a-z]{2,6}\\b([-a-zA-Z0-9@:%._\\+~#?&//=]*)"
-    search = re.search(regex, text, re.MULTILINE)
-    if search and search[0]:
-        return search[0]
+    regex = "(http[s]?)://([-a-zA-Z0-9@:%._\\+~#?&//=]{2,256}\\.[a-z]{2,6}\\b)([-a-zA-Z0-9@:%._\\+~#?&//=]*)"
+    match = re.search(regex, text, re.MULTILINE)
+    if match:
+        return match[0], match[1], match[2], match[3]
 
 
 def getHTML(url: str) -> str | None:

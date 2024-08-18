@@ -17,7 +17,7 @@ def init(bot, accid, event):
     try:
         resp = getResponse(text)
     except Exception as err:
-        resp = "**Error getting preview:**\n" + str(err)
+        resp = "**Error:**\n" + str(err)
         print(err)
 
     respMsg = MsgData(text=resp, quoted_message_id=msg.id)
