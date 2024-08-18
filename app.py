@@ -1,35 +1,38 @@
 from bs4 import BeautifulSoup
-from utils import searchUrl, getHtml
+from utils import findURL, getHTML
 
 
 def getResponse(text: str) -> str:
-    url = searchUrl(text)
-    if url:
-        preview = getPreview(url)
-        if preview:
-            return preview
-
-
-def getPreview(url: str) -> str:
-    htmlStr = getHtml(url)
-    if htmlStr:
-        soup = BeautifulSoup(htmlStr, features="html.parser")
-        title = getTitle(soup)
-        descr = getDescription(soup)
-        if title and not descr:
-            preview = "**" + title + "**"
-        if descr and not title:
-            preview = descr
-        if title and descr:
-            preview = "**" + title + "**" + "\n\n" + descr
+    URL = findURL(text)
+    if not URL:
+        return
+    HTML = getHTML(URL)
+    if not HTML:
+        return
+    preview = getPreview(HTML)
+    if not preview:
+        return
     return preview
 
 
-def getTitle(soup):
+def getPreview(HTML: str) -> str | None:
+    soup = BeautifulSoup(HTML, features="html.parser")
+    title = getTitle(soup)
+    descr = getDescription(soup)
+    if title and not descr:
+        preview = "**" + title + "**"
+    if descr and not title:
+        preview = descr
+    if title and descr:
+        preview = "**" + title + "**" + "\n\n" + descr
+    return preview
+
+
+def getTitle(soup: BeautifulSoup) -> str | None:
     return soup.title.string
 
 
-def getDescription(soup) -> str:
+def getDescription(soup: BeautifulSoup) -> str | None:
     metas = soup.find_all("meta")
     for meta in metas:
         attrs = meta.attrs
